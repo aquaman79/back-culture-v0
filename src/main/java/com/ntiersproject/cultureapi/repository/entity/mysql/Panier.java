@@ -1,9 +1,9 @@
-package com.ntiersproject.cultureapi.repository.entity;
+package com.ntiersproject.cultureapi.repository.entity.mysql;
 
 import jakarta.persistence.*;
 
 @Entity
-public class Favori {
+public class Panier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,5 +15,4 @@ public class Favori {
     @ManyToOne
     @JoinColumn(name = "id_film", nullable = false)
     private Film idFilm;
-
 }

@@ -1,9 +1,11 @@
-package com.ntiersproject.cultureapi.repository.entity;
+package com.ntiersproject.cultureapi.repository.entity.mysql;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
-public class Panier {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,4 +17,14 @@ public class Panier {
     @ManyToOne
     @JoinColumn(name = "id_film", nullable = false)
     private Film idFilm;
+
+    @Column(name = "is_achat", nullable = false)
+    private Boolean isAchat;
+
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private Double prix;
+
 }
