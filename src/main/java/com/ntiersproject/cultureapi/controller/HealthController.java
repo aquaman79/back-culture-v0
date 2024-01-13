@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.ntiersproject.cultureapi.controller;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
