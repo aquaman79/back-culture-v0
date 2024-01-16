@@ -1,0 +1,26 @@
+spring:
+    # MySQL
+    datasource:
+        url: jdbc:mysql://localhost:3306/bdd_culture
+        username: root
+        password:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+        hibernate:
+            ddl-auto: update
+
+    # MongoDB
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            database: bdd_culture
+
+#jwt
+jwt:
+    secret-key: cultureFilm2024
+    expiration: 30000 #30s
