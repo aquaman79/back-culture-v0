@@ -23,4 +23,4 @@ spring:
 #jwt
 jwt:
     secret-key: Y3VsdHVyZSBmaWxtIDIwMjQgOiBwcm9qZXQgYXJjaGl0ZWN0dXJlIG4tdGllcnM=
-    expiration: 30000 #30s
+    expiration: 60000 #60s
