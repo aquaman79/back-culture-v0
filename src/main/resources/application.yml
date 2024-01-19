@@ -22,5 +22,5 @@ spring:
 
 #jwt
 jwt:
-    secret-key: cultureFilm2024
+    secret-key: Y3VsdHVyZSBmaWxtIDIwMjQgOiBwcm9qZXQgYXJjaGl0ZWN0dXJlIG4tdGllcnM=
     expiration: 30000 #30s

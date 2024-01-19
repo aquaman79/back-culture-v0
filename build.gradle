@@ -18,6 +18,11 @@ repositories {
 dependencies {
 	implementation("org.springframework:spring-web")
 	implementation("javax.xml.bind:jaxb-api:2.3.1")
+
+	//lombok
+	compileOnly("org.projectlombok:lombok:1.18.30")
+	annotationProcessor("org.projectlombok:lombok:1.18.30")
+
 	//jersey
 	implementation("org.springframework.boot:spring-boot-starter-jersey")
 
@@ -29,9 +34,10 @@ dependencies {
 
 	//jwt
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
-	implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
-	implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
 
 

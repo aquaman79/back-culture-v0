@@ -6,19 +6,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-public class Film {
+@Table(name="film")
+public class FilmEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+    private List<TransactionEntity> transactions;
 
     @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
-    private List<Favori> favoris;
+    private List<FavoriEntity> favoris;
 
     @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
-    private List<Panier> paniers;
+    private List<PanierEntity> paniers;
 
     @Column(nullable = false)
     private String titre;
