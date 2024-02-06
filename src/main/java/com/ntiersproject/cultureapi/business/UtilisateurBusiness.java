@@ -1,9 +1,11 @@
 package com.ntiersproject.cultureapi.business;
 
-import com.ntiersproject.cultureapi.bean.Utilisateur;
+import com.ntiersproject.cultureapi.model.dto.Utilisateur;
+
+import java.util.List;
 
 public interface UtilisateurBusiness {
-    Utilisateur createUtilisateur(Utilisateur utilisateur);
+    Utilisateur creeUtilisateur(Utilisateur utilisateur);
 
-    Utilisateur findByEmail(String email);
+    List<Utilisateur> get();
 }

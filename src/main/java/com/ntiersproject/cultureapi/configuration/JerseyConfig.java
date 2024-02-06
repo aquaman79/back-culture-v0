@@ -10,5 +10,7 @@ public class JerseyConfig extends ResourceConfig {
   public JerseyConfig() {
     packages("com.ntiersproject.cultureapi.controller");
     packages("com.ntiersproject.cultureapi.filter");
+    packages("com.ntiersproject.cultureapi.exception");
+    packages("com.ntiersproject.cultureapi.security");
   }
 }

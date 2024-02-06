@@ -1,14 +1,19 @@
 package com.ntiersproject.cultureapi.business;
 
-import com.ntiersproject.cultureapi.bean.Utilisateur;
+import com.ntiersproject.cultureapi.exception.FunctionalException;
+import com.ntiersproject.cultureapi.model.dto.Utilisateur;
 import com.ntiersproject.cultureapi.mapper.UtilisateurMapper;
 import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
 import com.ntiersproject.cultureapi.repository.entity.mysql.UtilisateurEntity;
 import jakarta.inject.Inject;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UtilisateurBusinessImpl implements UtilisateurBusiness {
@@ -24,30 +29,40 @@ public class UtilisateurBusinessImpl implements UtilisateurBusiness {
     }
 
     @Override
-    public Utilisateur createUtilisateur(Utilisateur utilisateur) {
+    public Utilisateur creeUtilisateur(Utilisateur utilisateur) {
 
+        // encode mot de passe
         utilisateur.setMotDePasse(
                 passwordEncoder.encode(utilisateur.getMotDePasse())
         );
 
+        // definit la date d'inscription avec la date actuelle
         utilisateur.setDateInscription(LocalDate.now());
 
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.save(
-                UtilisateurMapper.getEntity(utilisateur)
-        );
+        // Verifie si le pseudo existe deja
+        if(utilisateurRepository.existsByPseudo(utilisateur.getPseudo())) {
+            throw new FunctionalException(HttpStatus.CONFLICT, "Ce pseudo existe déjà");
+        }
 
-        Utilisateur utilisateurCree = UtilisateurMapper.getDto(utilisateurEntity);
+        // Verifie si l'adresse e-mail existe deja
+        if(utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
+            throw new FunctionalException(HttpStatus.CONFLICT, "Cette adresse e-mail existe déjà");
+        }
+
+        // cree l'utilisateur
+        UtilisateurEntity entity = utilisateurRepository.save(
+                    UtilisateurMapper.mapToEntity(utilisateur)
+            );
+
+        Utilisateur utilisateurCree = UtilisateurMapper.mapToDto(entity);
 
         return utilisateurCree;
     }
 
     @Override
-    public Utilisateur findByEmail(String email) {
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByEmail(email);
-
-        Utilisateur utilisateur = UtilisateurMapper.getDto(utilisateurEntity);
-
-        return utilisateur;
+    public List<Utilisateur> get() {
+        List<UtilisateurEntity> entities = utilisateurRepository.findAll();
+        return UtilisateurMapper.mapToDtos(entities);
     }
 
 }

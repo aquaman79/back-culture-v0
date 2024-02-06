@@ -1,6 +1,6 @@
 package com.ntiersproject.cultureapi.security;
 
-import com.ntiersproject.cultureapi.bean.Role;
+import com.ntiersproject.cultureapi.model.Role;
 import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
 import com.ntiersproject.cultureapi.repository.entity.mysql.UtilisateurEntity;
 import jakarta.inject.Inject;
@@ -18,17 +18,27 @@ import java.util.List;
 @Component
 public class JwtUserDetailsService implements UserDetailsService {
 
-    @Inject
     private UtilisateurRepository utilisateurRepository;
+
+    @Inject
+    public JwtUserDetailsService(UtilisateurRepository utilisateurRepository) {
+        this.utilisateurRepository = utilisateurRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByEmail(username);
+        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByPseudoOrEmail(username, username);
 
         Role role = utilisateurEntity.getIsAdmin() ? Role.ADMIN : Role.USER;
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
 
-        return new User(utilisateurEntity.getNom(), utilisateurEntity.getMotDePasse(), authorities);
+        String usernamePseudoOuEmail;
+        if(utilisateurEntity.getPseudo().equals(username)) {
+            usernamePseudoOuEmail = utilisateurEntity.getPseudo();
+        } else {
+            usernamePseudoOuEmail = utilisateurEntity.getEmail();
+        }
+        return new User(usernamePseudoOuEmail, utilisateurEntity.getMotDePasse(), authorities);
     }
 }

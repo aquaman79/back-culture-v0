@@ -28,6 +28,9 @@ public class UtilisateurEntity {
     private String nom;
 
     @Column(unique = true, nullable = false)
+    private String pseudo;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(name = "mot_de_passe", nullable = false)

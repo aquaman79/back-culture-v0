@@ -1,17 +1,17 @@
-package com.ntiersproject.cultureapi.bean;
+package com.ntiersproject.cultureapi.model.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 public class Utilisateur {
 
     private Integer id;
+
     private String nom;
+
+    private String pseudo;
 
     private String email;
 

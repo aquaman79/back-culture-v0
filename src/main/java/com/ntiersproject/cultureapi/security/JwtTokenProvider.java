@@ -1,4 +1,4 @@
-package com.ntiersproject.cultureapi.filter;
+package com.ntiersproject.cultureapi.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

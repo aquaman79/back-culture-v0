@@ -1,12 +1,12 @@
 package com.ntiersproject.cultureapi.controller;
 
-import com.ntiersproject.cultureapi.bean.ConnexionRequest;
-import com.ntiersproject.cultureapi.bean.ConnexionResponse;
-import com.ntiersproject.cultureapi.bean.InscriptionRequest;
-import com.ntiersproject.cultureapi.bean.Utilisateur;
+import com.ntiersproject.cultureapi.model.dto.ConnexionRequest;
+import com.ntiersproject.cultureapi.model.dto.ConnexionResponse;
+import com.ntiersproject.cultureapi.model.dto.InscriptionRequest;
 import com.ntiersproject.cultureapi.business.UtilisateurBusiness;
-import com.ntiersproject.cultureapi.filter.JwtTokenProvider;
+import com.ntiersproject.cultureapi.security.JwtTokenProvider;
 import com.ntiersproject.cultureapi.mapper.UtilisateurMapper;
+import com.ntiersproject.cultureapi.utils.ValidationDonneesUtils;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -16,9 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Path("")
@@ -28,15 +26,12 @@ public class AuthController {
 
     private JwtTokenProvider jwtTokenProvider;
 
-    private PasswordEncoder passwordEncoder;
-
     private UtilisateurBusiness utilisateurBusiness;
 
     @Inject
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder, UtilisateurBusiness utilisateurBusiness) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UtilisateurBusiness utilisateurBusiness) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.passwordEncoder = passwordEncoder;
         this.utilisateurBusiness = utilisateurBusiness;
     }
 
@@ -46,8 +41,10 @@ public class AuthController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response inscrire(InscriptionRequest inscriptionRequest){
 
-        utilisateurBusiness.createUtilisateur(
-                UtilisateurMapper.mapDto(inscriptionRequest)
+        ValidationDonneesUtils.valideDonneesInscription(inscriptionRequest);
+
+        utilisateurBusiness.creeUtilisateur(
+                UtilisateurMapper.map(inscriptionRequest)
         );
 
         return Response.status(201).build();
@@ -59,15 +56,17 @@ public class AuthController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response connecter(ConnexionRequest connexionRequest){
 
+        ValidationDonneesUtils.valideDonneesConnexion(connexionRequest);
+
         authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(
-                  connexionRequest.getEmail(),connexionRequest.getMotDePasse()
+                  connexionRequest.getUsername(), connexionRequest.getMotDePasse()
           )
         );
-        String jwtToken = jwtTokenProvider.generateToken(connexionRequest.getEmail());
+        String jwtToken = jwtTokenProvider.generateToken(connexionRequest.getUsername());
 
         ConnexionResponse connexionResponse = new ConnexionResponse();
-        connexionResponse.setAccessToken(jwtToken);
+        connexionResponse.setJetonJWT(jwtToken);
 
         return Response.ok(connexionResponse).build();
     }

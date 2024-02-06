@@ -1,10 +1,9 @@
 package com.ntiersproject.cultureapi.configuration;
 
-import com.ntiersproject.cultureapi.filter.JwtAuthorizationFilter;
+import com.ntiersproject.cultureapi.security.JwtAuthorizationFilter;
 import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
 import com.ntiersproject.cultureapi.security.JwtUserDetailsService;
 import jakarta.inject.Inject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +25,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
     JwtAuthorizationFilter jwtAuthorizationFilter;
+
+    UtilisateurRepository utilisateurRepository;
+
+    @Inject
+    public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter, UtilisateurRepository utilisateurRepository) {
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+        this.utilisateurRepository = utilisateurRepository;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new JwtUserDetailsService();
+        return new JwtUserDetailsService(utilisateurRepository);
     }
 
     @Bean

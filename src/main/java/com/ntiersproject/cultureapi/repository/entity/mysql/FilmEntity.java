@@ -12,6 +12,14 @@ public class FilmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "genre_film",
+            joinColumns = { @JoinColumn(name = "id_film") },
+            inverseJoinColumns = { @JoinColumn(name = "id_genre") }
+    )
+    private List<GenreEntity> genres;
+
     @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactions;
 
