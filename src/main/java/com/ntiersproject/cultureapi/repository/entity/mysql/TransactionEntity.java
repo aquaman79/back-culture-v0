@@ -1,15 +1,17 @@
 package com.ntiersproject.cultureapi.repository.entity.mysql;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name="transaction")
+@Data
 public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_utilisateur", nullable = false)

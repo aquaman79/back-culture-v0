@@ -1,21 +1,26 @@
 package com.ntiersproject.cultureapi.controller;
 
+import com.ntiersproject.cultureapi.mapper.AuthMapper;
+import com.ntiersproject.cultureapi.model.Role;
 import com.ntiersproject.cultureapi.model.dto.ConnexionRequest;
-import com.ntiersproject.cultureapi.model.dto.ConnexionResponse;
 import com.ntiersproject.cultureapi.model.dto.InscriptionRequest;
 import com.ntiersproject.cultureapi.business.UtilisateurBusiness;
+import com.ntiersproject.cultureapi.model.dto.Utilisateur;
 import com.ntiersproject.cultureapi.security.JwtTokenProvider;
 import com.ntiersproject.cultureapi.mapper.UtilisateurMapper;
 import com.ntiersproject.cultureapi.utils.ValidationDonneesUtils;
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -27,6 +32,9 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     private UtilisateurBusiness utilisateurBusiness;
+
+    @Context
+    private HttpServletRequest httpServletRequest;
 
     @Inject
     public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UtilisateurBusiness utilisateurBusiness) {
@@ -43,11 +51,28 @@ public class AuthController {
 
         ValidationDonneesUtils.valideDonneesInscription(inscriptionRequest);
 
-        utilisateurBusiness.creeUtilisateur(
+        Utilisateur utilisateurCree = utilisateurBusiness.createUtilisateur(
                 UtilisateurMapper.map(inscriptionRequest)
         );
 
-        return Response.status(201).build();
+        return Response.status(201).entity(utilisateurCree).build();
+    }
+
+    @POST
+    @Path("/inscription/admin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inscrireAdmin(InscriptionRequest inscriptionRequest){
+        jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
+        ValidationDonneesUtils.valideDonneesInscription(inscriptionRequest);
+
+        Utilisateur utilisateurAcree = UtilisateurMapper.map(inscriptionRequest);
+        utilisateurAcree.setIsAdmin(true);
+        Utilisateur utilisateurCree = utilisateurBusiness.createUtilisateur(
+                utilisateurAcree
+        );
+
+        return Response.status(201).entity(utilisateurCree).build();
     }
 
     @POST
@@ -58,16 +83,16 @@ public class AuthController {
 
         ValidationDonneesUtils.valideDonneesConnexion(connexionRequest);
 
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(
                   connexionRequest.getUsername(), connexionRequest.getMotDePasse()
           )
         );
-        String jwtToken = jwtTokenProvider.generateToken(connexionRequest.getUsername());
 
-        ConnexionResponse connexionResponse = new ConnexionResponse();
-        connexionResponse.setJetonJWT(jwtToken);
+        String jwtToken = jwtTokenProvider.generateToken(connexionRequest.getUsername(), authentication.getAuthorities());
 
-        return Response.ok(connexionResponse).build();
+        Utilisateur utilisateur = utilisateurBusiness.getByUsername(connexionRequest.getUsername());
+
+        return Response.ok(AuthMapper.mapToConnexionResponse(jwtToken, utilisateur)).build();
     }
 }

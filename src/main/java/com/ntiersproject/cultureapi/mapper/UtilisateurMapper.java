@@ -9,6 +9,9 @@ import java.util.List;
 
 public class UtilisateurMapper {
     public static UtilisateurEntity mapToEntity(Utilisateur dto) {
+        if(dto == null) {
+            return null;
+        }
         UtilisateurEntity entity = new UtilisateurEntity();
         entity.setId(dto.getId());
         entity.setNom(dto.getNom());
@@ -22,6 +25,9 @@ public class UtilisateurMapper {
     }
 
     public static Utilisateur mapToDto(UtilisateurEntity entity) {
+        if(entity == null) {
+            return null;
+        }
         Utilisateur dto = new Utilisateur();
         dto.setId(entity.getId());
         dto.setNom(entity.getNom());
@@ -35,6 +41,7 @@ public class UtilisateurMapper {
     }
 
     public static List<Utilisateur> mapToDtos(List<UtilisateurEntity> entities) {
+
         List<Utilisateur> dtos = new ArrayList<>();
         if(entities != null) {
             for(UtilisateurEntity entity: entities) {
@@ -46,6 +53,9 @@ public class UtilisateurMapper {
     }
 
     public static Utilisateur map(InscriptionRequest inscriptionRequest) {
+        if(inscriptionRequest == null) {
+            return null;
+        }
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNom(inscriptionRequest.getNom());
         utilisateur.setPseudo(inscriptionRequest.getPseudo());

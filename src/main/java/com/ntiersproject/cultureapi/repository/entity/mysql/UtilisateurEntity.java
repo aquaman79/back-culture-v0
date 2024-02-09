@@ -12,8 +12,7 @@ import java.util.List;
 public class UtilisateurEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    private Long id;
 
     @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactions;

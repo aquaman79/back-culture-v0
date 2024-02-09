@@ -1,5 +1,6 @@
 package com.ntiersproject.cultureapi.configuration;
 
+import com.ntiersproject.cultureapi.security.ApplicationEntryPointAuthenticationExceptionHandler;
 import com.ntiersproject.cultureapi.security.JwtAuthorizationFilter;
 import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
 import com.ntiersproject.cultureapi.security.JwtUserDetailsService;
@@ -29,10 +30,14 @@ public class SecurityConfig {
 
     UtilisateurRepository utilisateurRepository;
 
+    ApplicationEntryPointAuthenticationExceptionHandler applicationEntryPointAuthenticationExceptionHandler;
+
     @Inject
-    public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter, UtilisateurRepository utilisateurRepository) {
+    public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter, UtilisateurRepository utilisateurRepository,
+                          ApplicationEntryPointAuthenticationExceptionHandler applicationEntryPointAuthenticationExceptionHandler) {
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
         this.utilisateurRepository = utilisateurRepository;
+        this.applicationEntryPointAuthenticationExceptionHandler = applicationEntryPointAuthenticationExceptionHandler;
     }
 
     @Bean
@@ -50,6 +55,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
+                .exceptionHandling(applicationEntryPointAuthenticationExceptionHandler)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class).build();
 
     }

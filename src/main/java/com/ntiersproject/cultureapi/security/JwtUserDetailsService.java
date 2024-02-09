@@ -29,9 +29,13 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UtilisateurEntity utilisateurEntity = utilisateurRepository.findByPseudoOrEmail(username, username);
 
+        if(utilisateurEntity == null) {
+            return null;
+        }
+
         Role role = utilisateurEntity.getIsAdmin() ? Role.ADMIN : Role.USER;
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        authorities.add(new SimpleGrantedAuthority(role.name()));
 
         String usernamePseudoOuEmail;
         if(utilisateurEntity.getPseudo().equals(username)) {

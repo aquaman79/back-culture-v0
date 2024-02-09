@@ -1,16 +1,18 @@
 package com.ntiersproject.cultureapi.repository.entity.mysql;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name="film")
+@Data
 public class FilmEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(

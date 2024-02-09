@@ -1,13 +1,15 @@
 package com.ntiersproject.cultureapi.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class Utilisateur {
 
-    private Integer id;
+    private Long id;
 
     private String nom;
 
@@ -15,9 +17,11 @@ public class Utilisateur {
 
     private String email;
 
+    @JsonIgnore
     private String motDePasse;
 
     private LocalDate dateInscription;
 
     private Boolean isAdmin;
+
 }
