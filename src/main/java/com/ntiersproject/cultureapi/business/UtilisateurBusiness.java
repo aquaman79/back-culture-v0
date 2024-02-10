@@ -28,4 +28,8 @@ public interface UtilisateurBusiness {
      * @return l'utilisateur
      */
     Utilisateur updateUtilisateur(Long id, UtilisateurUpdateRequest utilisateurUpdateRequest);
+
+    void deleteById(Long id);
+
+    void deleteAll();
 }

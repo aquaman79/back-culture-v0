@@ -130,6 +130,19 @@ public class UtilisateurBusinessImpl implements UtilisateurBusiness {
         return UtilisateurMapper.mapToDto(utilisateurModifieEntity);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        if(!utilisateurRepository.existsById(id)) {
+            throw new FunctionalException(HttpStatus.NOT_FOUND, Constantes.MESSAGE_UTILISATEUR_NON_TROUVE);
+        }
+        utilisateurRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        utilisateurRepository.deleteAll();
+    }
+
     private void verifiePseudoExistePas(String pseudo) {
         if(utilisateurRepository.existsByPseudo(pseudo)) {
             throw new FunctionalException(HttpStatus.CONFLICT, "Ce pseudo existe déjà");

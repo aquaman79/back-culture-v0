@@ -57,18 +57,28 @@ public class UtilisateurController {
         return Response.status(200).entity(utilisateurBusiness.getById(id)).build();
     }
 
-//    @GET
-//    @Path("/by-username/{username}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getById(@PathParam("username") String username){
-//        jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
-//        return Response.status(200).entity(utilisateurBusiness.getByUsername(username)).build();
-//    }
-
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") Long id, UtilisateurUpdateRequest utilisateurUpdateRequest){
         return Response.status(200).entity(utilisateurBusiness.updateUtilisateur(id, utilisateurUpdateRequest)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteById(@PathParam("id") Long id){
+        jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
+        utilisateurBusiness.deleteById(id);
+        return Response.status(200).entity("Utilisateur supprimé avec succès").build();
+    }
+
+    @DELETE
+    @Path("/deleteAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteAll(){
+        jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
+        utilisateurBusiness.deleteAll();
+        return Response.status(200).entity("Tous les utilisateurs ont été supprimés avec succès").build();
     }
 }
