@@ -1,8 +1,7 @@
 package com.ntiersproject.cultureapi.mapper;
 
-import com.ntiersproject.cultureapi.model.dto.InscriptionRequest;
 import com.ntiersproject.cultureapi.model.dto.Utilisateur;
-import com.ntiersproject.cultureapi.repository.entity.mysql.UtilisateurEntity;
+import com.ntiersproject.cultureapi.repository.mysql.entity.UtilisateurEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,55 +11,43 @@ public class UtilisateurMapper {
         if(dto == null) {
             return null;
         }
-        UtilisateurEntity entity = new UtilisateurEntity();
-        entity.setId(dto.getId());
-        entity.setNom(dto.getNom());
-        entity.setPseudo(dto.getPseudo());
-        entity.setEmail(dto.getEmail());
-        entity.setMotDePasse(dto.getMotDePasse());
-        entity.setDateInscription(dto.getDateInscription());
-        entity.setIsAdmin(dto.getIsAdmin() == null ? false : dto.getIsAdmin());
+        UtilisateurEntity entite = new UtilisateurEntity();
+        entite.setId(dto.getId());
+        entite.setNom(dto.getNom());
+        entite.setPseudo(dto.getPseudo());
+        entite.setEmail(dto.getEmail());
+        entite.setMotDePasse(dto.getMotDePasse());
+        entite.setDateInscription(dto.getDateInscription());
+        entite.setIsAdmin(dto.getIsAdmin() == null ? false : dto.getIsAdmin());
 
-        return entity;
+        return entite;
     }
 
-    public static Utilisateur mapToDto(UtilisateurEntity entity) {
-        if(entity == null) {
+    public static Utilisateur mapToDto(UtilisateurEntity entite) {
+        if(entite == null) {
             return null;
         }
         Utilisateur dto = new Utilisateur();
-        dto.setId(entity.getId());
-        dto.setNom(entity.getNom());
-        dto.setPseudo(entity.getPseudo());
-        dto.setEmail(entity.getEmail());
-        dto.setMotDePasse(entity.getMotDePasse());
-        dto.setDateInscription(entity.getDateInscription());
-        dto.setIsAdmin(entity.getIsAdmin() == null ? false : entity.getIsAdmin());
+        dto.setId(entite.getId());
+        dto.setNom(entite.getNom());
+        dto.setPseudo(entite.getPseudo());
+        dto.setEmail(entite.getEmail());
+        dto.setMotDePasse(entite.getMotDePasse());
+        dto.setDateInscription(entite.getDateInscription());
+        dto.setIsAdmin(entite.getIsAdmin() == null ? false : entite.getIsAdmin());
 
         return dto;
     }
 
-    public static List<Utilisateur> mapToDtos(List<UtilisateurEntity> entities) {
+    public static List<Utilisateur> mapToDtos(List<UtilisateurEntity> entites) {
 
         List<Utilisateur> dtos = new ArrayList<>();
-        if(entities != null) {
-            for(UtilisateurEntity entity: entities) {
-                dtos.add(mapToDto(entity));
+        if(entites != null) {
+            for(UtilisateurEntity entite: entites) {
+                dtos.add(mapToDto(entite));
             }
         }
 
         return dtos;
-    }
-
-    public static Utilisateur map(InscriptionRequest inscriptionRequest) {
-        if(inscriptionRequest == null) {
-            return null;
-        }
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setNom(inscriptionRequest.getNom());
-        utilisateur.setPseudo(inscriptionRequest.getPseudo());
-        utilisateur.setEmail(inscriptionRequest.getEmail());
-        utilisateur.setMotDePasse(inscriptionRequest.getMotDePasse());
-        return utilisateur;
     }
 }

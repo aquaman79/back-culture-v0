@@ -1,7 +1,6 @@
-package com.ntiersproject.cultureapi.business;
+package com.ntiersproject.cultureapi.business.utilisateur;
 
 import com.ntiersproject.cultureapi.model.dto.Utilisateur;
-import com.ntiersproject.cultureapi.model.dto.UtilisateurUpdateRequest;
 
 import java.util.List;
 
@@ -23,11 +22,12 @@ public interface UtilisateurBusiness {
 
     /**
      * Modifie les informations non null de la dto Utilisateur
+     *
      * @param id
-     * @param utilisateurUpdateRequest
+     * @param utilisateur
      * @return l'utilisateur
      */
-    Utilisateur updateUtilisateur(Long id, UtilisateurUpdateRequest utilisateurUpdateRequest);
+    Utilisateur updateUtilisateur(Long id, Utilisateur utilisateur);
 
     void deleteById(Long id);
 

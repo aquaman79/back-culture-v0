@@ -1,6 +1,6 @@
-package com.ntiersproject.cultureapi.repository;
+package com.ntiersproject.cultureapi.repository.mysql;
 
-import com.ntiersproject.cultureapi.repository.entity.mysql.UtilisateurEntity;
+import com.ntiersproject.cultureapi.repository.mysql.entity.UtilisateurEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +15,5 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity, 
     UtilisateurEntity findByPseudoOrEmail(String pseudo, String email);
 
     @Override
-    List<UtilisateurEntity> findAllById(Iterable<Long> integers);
+    List<UtilisateurEntity> findAllById(Iterable<Long> ids);
 }

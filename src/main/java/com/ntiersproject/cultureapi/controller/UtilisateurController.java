@@ -1,11 +1,9 @@
 package com.ntiersproject.cultureapi.controller;
 
-import com.ntiersproject.cultureapi.business.UtilisateurBusiness;
+import com.ntiersproject.cultureapi.business.utilisateur.UtilisateurBusiness;
 import com.ntiersproject.cultureapi.model.Role;
 import com.ntiersproject.cultureapi.model.dto.Utilisateur;
-import com.ntiersproject.cultureapi.model.dto.UtilisateurUpdateRequest;
 import com.ntiersproject.cultureapi.security.JwtTokenProvider;
-import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -26,7 +24,6 @@ public class UtilisateurController {
     @Context
     private HttpServletRequest httpServletRequest;
 
-    @Inject
     public UtilisateurController(UtilisateurBusiness utilisateurBusiness, JwtTokenProvider jwtTokenProvider) {
         this.utilisateurBusiness = utilisateurBusiness;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -60,8 +57,8 @@ public class UtilisateurController {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Long id, UtilisateurUpdateRequest utilisateurUpdateRequest){
-        return Response.status(200).entity(utilisateurBusiness.updateUtilisateur(id, utilisateurUpdateRequest)).build();
+    public Response update(@PathParam("id") Long id, Utilisateur utilisateur){
+        return Response.status(200).entity(utilisateurBusiness.updateUtilisateur(id, utilisateur)).build();
     }
 
     @DELETE

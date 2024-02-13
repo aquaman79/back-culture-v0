@@ -1,14 +1,12 @@
-package com.ntiersproject.cultureapi.repository.entity.mysql;
+package com.ntiersproject.cultureapi.repository.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name="transaction")
+@Table(name="panier")
 @Data
-public class TransactionEntity {
+public class PanierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,14 +18,4 @@ public class TransactionEntity {
     @ManyToOne
     @JoinColumn(name = "id_film", nullable = false)
     private FilmEntity idFilm;
-
-    @Column(name = "is_achat", nullable = false)
-    private Boolean isAchat;
-
-    @Column(nullable = false)
-    private LocalDate date;
-
-    @Column(nullable = false)
-    private Double prix;
-
 }

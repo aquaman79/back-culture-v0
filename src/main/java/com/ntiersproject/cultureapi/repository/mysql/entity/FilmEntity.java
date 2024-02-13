@@ -1,4 +1,4 @@
-package com.ntiersproject.cultureapi.repository.entity.mysql;
+package com.ntiersproject.cultureapi.repository.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class FilmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "genre_film",
             joinColumns = { @JoinColumn(name = "id_film") },
@@ -31,7 +31,7 @@ public class FilmEntity {
     @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
     private List<PanierEntity> paniers;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String titre;
 
     private String description;
@@ -39,10 +39,5 @@ public class FilmEntity {
     @Column(name = "date_sortie")
     private LocalDate dateSortie;
 
-    private String genre;
-
     private Float duree;
-
-    @Column(name = "url_bande_annonce")
-    private String urlBandeAnnonce;
 }

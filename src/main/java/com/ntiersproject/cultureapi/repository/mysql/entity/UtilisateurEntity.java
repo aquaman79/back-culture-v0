@@ -1,4 +1,4 @@
-package com.ntiersproject.cultureapi.repository.entity.mysql;
+package com.ntiersproject.cultureapi.repository.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

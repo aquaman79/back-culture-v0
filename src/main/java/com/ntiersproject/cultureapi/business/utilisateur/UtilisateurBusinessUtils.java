@@ -1,26 +1,26 @@
-package com.ntiersproject.cultureapi.utils;
+package com.ntiersproject.cultureapi.business.utilisateur;
 
 import com.ntiersproject.cultureapi.exception.FunctionalException;
 import com.ntiersproject.cultureapi.model.dto.ConnexionRequest;
-import com.ntiersproject.cultureapi.model.dto.InscriptionRequest;
 import com.ntiersproject.cultureapi.model.dto.Utilisateur;
+import com.ntiersproject.cultureapi.utils.Constantes;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
-public class ValidationDonneesUtils {
+public class UtilisateurBusinessUtils {
 
 
-    public static void valideDonneesInscription(InscriptionRequest inscriptionRequest) {
-        if(inscriptionRequest == null) {
+    public static void valideDonneesEnregistrement(Utilisateur utilisateur) {
+        if(utilisateur == null) {
             throw new FunctionalException(HttpStatus.BAD_REQUEST, "Aucune information n'a été saisie");
         }
 
 
-        validePseudo(inscriptionRequest.getPseudo());
+        validePseudo(utilisateur.getPseudo());
 
-        valideEmail(inscriptionRequest.getEmail());
+        valideEmail(utilisateur.getEmail());
 
-        valideMotsDePasse(inscriptionRequest.getMotDePasse(), inscriptionRequest.getConfirmationMotDePasse());
+        valideMotDePasse(utilisateur.getMotDePasse());
     }
 
     public static void valideDonneesConnexion(ConnexionRequest connexionRequest) {
@@ -40,7 +40,7 @@ public class ValidationDonneesUtils {
 
     public static void valideNom(String nom) {
         if(!StringUtils.hasText(nom)) {
-            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le nom ne peut être vide");
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le nom doit être renseigné");
         }
     }
 
@@ -56,15 +56,10 @@ public class ValidationDonneesUtils {
         }
     }
 
-    public static void valideMotsDePasse(String motDePasse, String confirmationMotDePasse) {
+    public static void valideMotDePasse(String motDePasse) {
         if(motDePasse == null || !motDePasse.matches(Constantes.REGEX_MOT_DE_PASSE)) {
             throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le mot de passe doit contenir au moins 8 caractères : minimum 1 majuscule, 1 minuscule, 1 chiffre, 1 caractere special parmi #?!@$%^&*-");
         }
-
-        if(!motDePasse.equals(confirmationMotDePasse)) {
-            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Les mots de passe doivent être identiques");
-        }
-
     }
 
 }

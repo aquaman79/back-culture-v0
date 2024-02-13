@@ -3,13 +3,11 @@ package com.ntiersproject.cultureapi.controller;
 import com.ntiersproject.cultureapi.mapper.AuthMapper;
 import com.ntiersproject.cultureapi.model.Role;
 import com.ntiersproject.cultureapi.model.dto.ConnexionRequest;
-import com.ntiersproject.cultureapi.model.dto.InscriptionRequest;
-import com.ntiersproject.cultureapi.business.UtilisateurBusiness;
+import com.ntiersproject.cultureapi.business.utilisateur.UtilisateurBusiness;
 import com.ntiersproject.cultureapi.model.dto.Utilisateur;
 import com.ntiersproject.cultureapi.security.JwtTokenProvider;
-import com.ntiersproject.cultureapi.mapper.UtilisateurMapper;
-import com.ntiersproject.cultureapi.utils.ValidationDonneesUtils;
-import jakarta.inject.Inject;
+import com.ntiersproject.cultureapi.business.utilisateur.UtilisateurBusinessUtils;
+import com.ntiersproject.cultureapi.utils.FormatDonneesUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -36,7 +34,6 @@ public class AuthController {
     @Context
     private HttpServletRequest httpServletRequest;
 
-    @Inject
     public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UtilisateurBusiness utilisateurBusiness) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -47,12 +44,14 @@ public class AuthController {
     @Path("/inscription")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response inscrire(InscriptionRequest inscriptionRequest){
+    public Response inscrire(Utilisateur utilisateur){
 
-        ValidationDonneesUtils.valideDonneesInscription(inscriptionRequest);
+        FormatDonneesUtils.trimStrings(utilisateur);
+        UtilisateurBusinessUtils.valideDonneesEnregistrement(utilisateur);
 
+        utilisateur.setIsAdmin(false);
         Utilisateur utilisateurCree = utilisateurBusiness.createUtilisateur(
-                UtilisateurMapper.map(inscriptionRequest)
+                utilisateur
         );
 
         return Response.status(201).entity(utilisateurCree).build();
@@ -62,14 +61,14 @@ public class AuthController {
     @Path("/inscription/admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response inscrireAdmin(InscriptionRequest inscriptionRequest){
+    public Response inscrireAdmin(Utilisateur utilisateur) {
         jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
-        ValidationDonneesUtils.valideDonneesInscription(inscriptionRequest);
+        FormatDonneesUtils.trimStrings(utilisateur);
+        UtilisateurBusinessUtils.valideDonneesEnregistrement(utilisateur);
 
-        Utilisateur utilisateurAcree = UtilisateurMapper.map(inscriptionRequest);
-        utilisateurAcree.setIsAdmin(true);
+        utilisateur.setIsAdmin(true);
         Utilisateur utilisateurCree = utilisateurBusiness.createUtilisateur(
-                utilisateurAcree
+                utilisateur
         );
 
         return Response.status(201).entity(utilisateurCree).build();
@@ -81,7 +80,7 @@ public class AuthController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response connecter(ConnexionRequest connexionRequest){
 
-        ValidationDonneesUtils.valideDonneesConnexion(connexionRequest);
+        UtilisateurBusinessUtils.valideDonneesConnexion(connexionRequest);
 
         Authentication authentication = authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(

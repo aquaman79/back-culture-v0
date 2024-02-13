@@ -1,9 +1,8 @@
 package com.ntiersproject.cultureapi.security;
 
 import com.ntiersproject.cultureapi.model.Role;
-import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
-import com.ntiersproject.cultureapi.repository.entity.mysql.UtilisateurEntity;
-import jakarta.inject.Inject;
+import com.ntiersproject.cultureapi.repository.mysql.UtilisateurRepository;
+import com.ntiersproject.cultureapi.repository.mysql.entity.UtilisateurEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +19,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private UtilisateurRepository utilisateurRepository;
 
-    @Inject
     public JwtUserDetailsService(UtilisateurRepository utilisateurRepository) {
         this.utilisateurRepository = utilisateurRepository;
     }

@@ -28,7 +28,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private JwtUserDetailsService jwtUserDetailsService;
 
-    @Inject
     public JwtAuthorizationFilter(JwtTokenProvider jwtTokenProvider, JwtUserDetailsService jwtUserDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.jwtUserDetailsService = jwtUserDetailsService;

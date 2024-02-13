@@ -1,4 +1,4 @@
-package com.ntiersproject.cultureapi.repository.entity.mysql;
+package com.ntiersproject.cultureapi.repository.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,6 +16,6 @@ public class GenreEntity {
     @Column(unique = true, nullable = false)
     private String libelle;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", cascade = CascadeType.REMOVE)
     private List<FilmEntity> films;
 }

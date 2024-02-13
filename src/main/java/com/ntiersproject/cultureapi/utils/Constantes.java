@@ -14,5 +14,7 @@ public class Constantes {
 
     public static final String MESSAGE_UTILISATEUR_NON_TROUVE = "Utilisateur non trouvé";
 
+    public static final String MESSAGE_GENRE_NON_TROUVE = "Genre non trouvé";
+
     public static final String MESSAGE_MAUVAIS_FORMAT_REQUETE = "Mauvais format de la requête";
 }

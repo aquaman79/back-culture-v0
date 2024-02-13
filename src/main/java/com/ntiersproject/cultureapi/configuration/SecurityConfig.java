@@ -2,9 +2,8 @@ package com.ntiersproject.cultureapi.configuration;
 
 import com.ntiersproject.cultureapi.security.ApplicationEntryPointAuthenticationExceptionHandler;
 import com.ntiersproject.cultureapi.security.JwtAuthorizationFilter;
-import com.ntiersproject.cultureapi.repository.UtilisateurRepository;
+import com.ntiersproject.cultureapi.repository.mysql.UtilisateurRepository;
 import com.ntiersproject.cultureapi.security.JwtUserDetailsService;
-import jakarta.inject.Inject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +31,6 @@ public class SecurityConfig {
 
     ApplicationEntryPointAuthenticationExceptionHandler applicationEntryPointAuthenticationExceptionHandler;
 
-    @Inject
     public SecurityConfig(JwtAuthorizationFilter jwtAuthorizationFilter, UtilisateurRepository utilisateurRepository,
                           ApplicationEntryPointAuthenticationExceptionHandler applicationEntryPointAuthenticationExceptionHandler) {
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;

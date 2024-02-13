@@ -1,12 +1,12 @@
-package com.ntiersproject.cultureapi.repository.entity.mysql;
+package com.ntiersproject.cultureapi.repository.mysql.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="panier")
+@Table(name="favori")
 @Data
-public class PanierEntity {
+public class FavoriEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,4 +18,5 @@ public class PanierEntity {
     @ManyToOne
     @JoinColumn(name = "id_film", nullable = false)
     private FilmEntity idFilm;
+
 }
