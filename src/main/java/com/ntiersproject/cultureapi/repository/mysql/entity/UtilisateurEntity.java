@@ -14,13 +14,13 @@ public class UtilisateurEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactions;
 
-    @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<FavoriEntity> favoris;
 
-    @OneToMany(mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idUtilisateur", cascade = CascadeType.ALL)
     private List<PanierEntity> paniers;
 
     @Column(nullable = false)

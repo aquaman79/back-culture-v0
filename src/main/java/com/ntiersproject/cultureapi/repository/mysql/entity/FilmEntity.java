@@ -14,7 +14,7 @@ public class FilmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "genre_film",
             joinColumns = { @JoinColumn(name = "id_film") },
@@ -37,7 +37,7 @@ public class FilmEntity {
     private String description;
 
     @Column(name = "date_sortie")
-    private LocalDate dateSortie;
+    private String dateSortie;
 
     private Float duree;
 }

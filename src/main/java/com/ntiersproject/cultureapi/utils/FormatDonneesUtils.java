@@ -1,6 +1,12 @@
 package com.ntiersproject.cultureapi.utils;
 
+import com.ntiersproject.cultureapi.exception.FunctionalException;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
+
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class FormatDonneesUtils {
 
@@ -36,4 +42,15 @@ public class FormatDonneesUtils {
             }
         }
     }
+
+    public static void valideDate(String date) {
+        try {
+            if(StringUtils.hasText(date)) {
+                LocalDate localDate = LocalDate.parse(date);
+            }
+        } catch (DateTimeParseException e) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "La date doit être au format YYYY-MM-dd");
+        }
+    }
+
 }

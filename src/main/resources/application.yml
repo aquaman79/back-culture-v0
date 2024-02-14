@@ -22,6 +22,7 @@ spring:
             host: localhost
             port: 27017
             database: bdd_culture
+            auto-index-creation: true
 
 #jwt
 jwt:

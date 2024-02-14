@@ -40,7 +40,7 @@ public class UtilisateurBusinessUtils {
 
     public static void valideNom(String nom) {
         if(!StringUtils.hasText(nom)) {
-            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le nom doit être renseigné");
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le nom ne peut être vide");
         }
     }
 

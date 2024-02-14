@@ -66,15 +66,23 @@ public class GenreBusinessImpl implements GenreBusiness {
         }
 
         FormatDonneesUtils.trimStrings(genre);
-        GenreBusinessUtils.valideDonneesEnregistrement(genre);
-        verifieLibelleExistePas(genre.getLibelle());
+        if(genre == null) {
+            return GenreMapper.mapToDto(optionalGenre.get());
+        }
 
-        GenreEntity entite = optionalGenre.get();
-        entite.setLibelle(genre.getLibelle());
+        if(genre.getLibelle() != null) {
+            GenreBusinessUtils.valideLibelle(genre.getLibelle());
+            verifieLibelleExistePas(genre.getLibelle());
 
-        entite = genreRepository.save(entite);
+            GenreEntity entite = optionalGenre.get();
+            entite.setLibelle(genre.getLibelle());
 
-        return GenreMapper.mapToDto(entite);
+            entite = genreRepository.save(entite);
+
+            return GenreMapper.mapToDto(entite);
+        }
+        return GenreMapper.mapToDto(optionalGenre.get());
+
     }
 
     @Override

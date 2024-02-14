@@ -16,5 +16,7 @@ public class Constantes {
 
     public static final String MESSAGE_GENRE_NON_TROUVE = "Genre non trouvé";
 
+    public static final String MESSAGE_FILM_NON_TROUVE = "Film non trouvé";
+
     public static final String MESSAGE_MAUVAIS_FORMAT_REQUETE = "Mauvais format de la requête";
 }

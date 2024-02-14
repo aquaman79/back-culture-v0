@@ -2,7 +2,7 @@ package com.ntiersproject.cultureapi.model.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class Film {
@@ -10,15 +10,17 @@ public class Film {
 
     private String titre;
 
+    private List<Long> idsGenres;
+
     private String description;
 
-    private LocalDate dateSortie;
+    private String dateSortie;
 
     private Float duree;
 
-    private String imageBase64;
+    private ImageFilm image;
 
-    private String videoBase64;
+    private VideoFilm video;
 
-    private String videoBandeAnnonceBase64;
+    private VideoFilm videoBandeAnnonce;
 }

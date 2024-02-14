@@ -16,6 +16,6 @@ public class GenreEntity {
     @Column(unique = true, nullable = false)
     private String libelle;
 
-    @ManyToMany(mappedBy = "genres", cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "genres", cascade = CascadeType.REMOVE)
     private List<FilmEntity> films;
 }

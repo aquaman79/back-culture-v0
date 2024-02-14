@@ -7,8 +7,14 @@ import org.springframework.util.StringUtils;
 
 public class GenreBusinessUtils {
     public static void valideDonneesEnregistrement(Genre genre) {
-        if(genre == null || !StringUtils.hasText(genre.getLibelle())) {
-            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le libelle doit être renseigné");
+        if(genre == null) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Aucune information n'a été renseignée");
+        }
+    }
+
+    public static void valideLibelle(String libelle) {
+        if(!StringUtils.hasText(libelle)) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le libellé ne peut être vide");
         }
     }
 }
