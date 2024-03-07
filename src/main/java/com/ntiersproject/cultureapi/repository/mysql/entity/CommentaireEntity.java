@@ -6,14 +6,14 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="transaction")
+@Table(name="commentaire")
 @Data
-public class TransactionEntity {
+public class CommentaireEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utilisateur", nullable = false)
     private UtilisateurEntity utilisateur;
 
@@ -21,13 +21,9 @@ public class TransactionEntity {
     @JoinColumn(name = "id_film", nullable = false)
     private FilmEntity film;
 
-    @Column(name = "is_achat", nullable = false)
-    private Boolean isAchat;
+    @Column(nullable = false)
+    private String texte;
 
     @Column(nullable = false)
     private LocalDate date;
-
-    @Column(nullable = false)
-    private Double prix;
-
 }

@@ -14,30 +14,30 @@ public class FilmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "genre_film",
-            joinColumns = { @JoinColumn(name = "id_film") },
-            inverseJoinColumns = { @JoinColumn(name = "id_genre") }
-    )
-    private List<GenreEntity> genres;
-
-    @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<TransactionEntity> transactions;
 
-    @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<FavoriEntity> favoris;
 
-    @OneToMany(mappedBy = "idFilm", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<PanierEntity> paniers;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
+    private List<CommentaireEntity> commentaires;
 
     @Column(unique = true, nullable = false)
     private String titre;
 
+    private String genre;
+
     private String description;
 
     @Column(name = "date_sortie")
-    private String dateSortie;
+    private LocalDate dateSortie;
 
     private Float duree;
+
+    @Column(nullable = false)
+    private String urlBandeAnnonce;
 }

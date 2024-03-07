@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class Utilisateur {
@@ -17,7 +16,6 @@ public class Utilisateur {
 
     private String email;
 
-    @JsonIgnore
     private String motDePasse;
 
     private LocalDate dateInscription;

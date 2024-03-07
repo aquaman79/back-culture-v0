@@ -13,10 +13,10 @@ public class FavoriEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_utilisateur", nullable = false)
-    private UtilisateurEntity idUtilisateur;
+    private UtilisateurEntity utilisateur;
 
     @ManyToOne
     @JoinColumn(name = "id_film", nullable = false)
-    private FilmEntity idFilm;
+    private FilmEntity film;
 
 }

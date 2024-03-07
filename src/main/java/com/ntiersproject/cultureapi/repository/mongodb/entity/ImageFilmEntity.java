@@ -10,8 +10,6 @@ public class ImageFilmEntity {
 
     @Indexed(unique = true)
     private Long idFilm;
-    @Indexed(unique = true)
-    private String nom;
 
     private byte[] bytes;
 }

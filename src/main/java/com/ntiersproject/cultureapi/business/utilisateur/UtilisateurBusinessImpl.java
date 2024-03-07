@@ -85,43 +85,14 @@ public class UtilisateurBusinessImpl implements UtilisateurBusiness {
 
     @Override
     public Utilisateur updateUtilisateur(Long id, Utilisateur utilisateur) {
-        FormatDonneesUtils.trimStrings(utilisateur);
         Optional<UtilisateurEntity> optionalEntite = utilisateurRepository.findById(id);
         if(!optionalEntite.isPresent()) {
             throw new FunctionalException(HttpStatus.NOT_FOUND, Constantes.MESSAGE_UTILISATEUR_NON_TROUVE);
         }
 
         UtilisateurEntity entite = optionalEntite.get();
-        if(utilisateur == null) {
-            return UtilisateurMapper.mapToDto(entite);
-        }
 
-        if(utilisateur.getNom() != null) {
-            UtilisateurBusinessUtils.valideNom(utilisateur.getNom());
-            entite.setNom(utilisateur.getNom());
-        }
-
-        if(utilisateur.getPseudo() != null) {
-            UtilisateurBusinessUtils.validePseudo(utilisateur.getPseudo());
-            verifiePseudoExistePas(utilisateur.getPseudo());
-            entite.setPseudo(utilisateur.getPseudo());
-        }
-
-        if(utilisateur.getEmail() != null) {
-            UtilisateurBusinessUtils.valideEmail(utilisateur.getEmail());
-            verifieEmailExistePas(utilisateur.getEmail());
-            entite.setEmail(utilisateur.getEmail());
-        }
-
-        if(utilisateur.getMotDePasse() != null) {
-            UtilisateurBusinessUtils.valideMotDePasse(utilisateur.getMotDePasse());
-            if(passwordEncoder.matches(utilisateur.getMotDePasse(), entite.getMotDePasse())) {
-                throw new FunctionalException(HttpStatus.BAD_REQUEST, "Mot de passe identique à l'ancien, veuillez changer");
-            } else {
-                String nouveauMotDePasse = passwordEncoder.encode(utilisateur.getMotDePasse());
-                entite.setMotDePasse(nouveauMotDePasse);
-            }
-        }
+        UtilisateurMapper.map(entite, utilisateur);
 
         UtilisateurEntity utilisateurModifieEntite = utilisateurRepository.save(entite);
 
@@ -151,7 +122,6 @@ public class UtilisateurBusinessImpl implements UtilisateurBusiness {
         if(utilisateurRepository.existsByEmail(email)) {
             throw new FunctionalException(HttpStatus.CONFLICT, "Cette adresse e-mail existe déjà");
         }
-
     }
 
 }

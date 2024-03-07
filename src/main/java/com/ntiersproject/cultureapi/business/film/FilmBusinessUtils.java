@@ -14,12 +14,33 @@ public class FilmBusinessUtils {
 
         valideTitre(film.getTitre());
 
-        FormatDonneesUtils.valideDate(film.getDateSortie());
+        valideGenre(film.getGenre());
+
+        valideImageBase64(film.getImageBase64());
+
+        valideUrlBandeAnnonce(film.getUrlBandeAnnonce());
     }
 
     public static void valideTitre(String titre) {
         if(!StringUtils.hasText(titre)) {
-            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le titre doit être renseigné");
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le titre ne peut être vide");
+        }
+    }
+
+    public static void valideGenre(String genre) {
+        if(!StringUtils.hasText(genre)) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "Le genre ne peut être vide");
+        }
+    }
+    public static void valideUrlBandeAnnonce(String urlBandeAnnonce) {
+        if(!StringUtils.hasText(urlBandeAnnonce)) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "L'url de la bande d'annonce ne peut être vide");
+        }
+    }
+
+    public static void valideImageBase64(String imageBase64) {
+        if(!StringUtils.hasText(imageBase64)) {
+            throw new FunctionalException(HttpStatus.BAD_REQUEST, "L'image en base64 ne peut être vide");
         }
     }
 }

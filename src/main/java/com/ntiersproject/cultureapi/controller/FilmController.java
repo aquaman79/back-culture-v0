@@ -28,13 +28,22 @@ public class FilmController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @POST
+    /*@POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createFilm(Film film) {
         jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
         Film filmCree = filmBusiness.createFilm(film);
         return Response.status(201).entity(filmCree).build();
+    }*/
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createFilms(List<Film> films) {
+        jwtTokenProvider.validateRights(httpServletRequest, Role.ADMIN);
+        List<Film> filmsCrees = filmBusiness.createFilms(films);
+        return Response.status(201).entity(filmsCrees).build();
     }
 
     @GET

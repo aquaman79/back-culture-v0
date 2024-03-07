@@ -1,6 +1,8 @@
 package com.ntiersproject.cultureapi.mapper;
 
+import com.ntiersproject.cultureapi.model.dto.Commentaire;
 import com.ntiersproject.cultureapi.model.dto.Film;
+import com.ntiersproject.cultureapi.repository.mysql.entity.CommentaireEntity;
 import com.ntiersproject.cultureapi.repository.mysql.entity.FilmEntity;
 
 import java.util.ArrayList;
@@ -14,16 +16,25 @@ public class FilmMapper {
         Film dto = new Film();
         dto.setId(entite.getId());
         dto.setTitre(entite.getTitre());
+        dto.setGenre(entite.getGenre());
         dto.setDescription(entite.getDescription());
         dto.setDateSortie(entite.getDateSortie());
         dto.setDuree(entite.getDuree());
+        dto.setUrlBandeAnnonce(entite.getUrlBandeAnnonce());
 
-        List<Long> idsGenres = new ArrayList<>();
-        if(entite.getGenres()!=null){
-            idsGenres = entite.getGenres().stream().map(i -> i.getId()).toList();
+        if(entite.getCommentaires() !=null) {
+            List<Commentaire> commentaires = new ArrayList<>();
+            for(CommentaireEntity commentaireEntity: entite.getCommentaires()) {
+                Commentaire commentaire = new Commentaire();
+                commentaire.setId(commentaireEntity.getId());
+                commentaire.setAuteur(commentaireEntity.getUtilisateur().getPseudo());
+                commentaire.setContenu(commentaireEntity.getTexte());
+                commentaire.setDate(commentaireEntity.getDate());
+
+                commentaires.add(commentaire);
+            }
+            dto.setCommentaires(commentaires);
         }
-
-        dto.setIdsGenres(idsGenres);
 
         return dto;
     }
@@ -46,10 +57,28 @@ public class FilmMapper {
         FilmEntity entite = new FilmEntity();
         entite.setId(dto.getId());
         entite.setTitre(dto.getTitre());
+        entite.setGenre(dto.getGenre());
         entite.setDescription(dto.getDescription());
         entite.setDateSortie(dto.getDateSortie());
         entite.setDuree(dto.getDuree());
+        entite.setUrlBandeAnnonce(dto.getUrlBandeAnnonce());
 
         return entite;
+    }
+
+    public static void map(FilmEntity cible, Film source) {
+        cible.setId(source.getId());
+        cible.setTitre(source.getTitre());
+        cible.setGenre(source.getGenre());
+        cible.setDescription(source.getDescription());
+        cible.setDateSortie(source.getDateSortie());
+        cible.setDuree(source.getDuree());
+        cible.setUrlBandeAnnonce(source.getUrlBandeAnnonce());
+
+        if(source.getCommentaires() == null) {
+            cible.setCommentaires(null);
+        } else {
+            List<CommentaireEntity> commentaireEntities = new ArrayList<>();
+        }
     }
 }

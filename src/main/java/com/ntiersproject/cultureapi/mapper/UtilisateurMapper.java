@@ -50,4 +50,17 @@ public class UtilisateurMapper {
 
         return dtos;
     }
+    public static void map(UtilisateurEntity cible, Utilisateur source) {
+        if(cible == null || source == null) {
+            return;
+        }
+        cible.setId(source.getId());
+        cible.setNom(source.getNom());
+        cible.setPseudo(source.getPseudo());
+        cible.setEmail(source.getEmail());
+        cible.setMotDePasse(source.getMotDePasse());
+        cible.setDateInscription(source.getDateInscription());
+        cible.setIsAdmin(source.getIsAdmin());
+
+    }
 }

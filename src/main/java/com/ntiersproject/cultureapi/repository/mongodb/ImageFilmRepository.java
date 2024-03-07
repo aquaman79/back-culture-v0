@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ImageFilmRepository extends MongoRepository<ImageFilmEntity, String> {
     ImageFilmEntity findByIdFilm(Long idFilm);
-    boolean existsByNom(String nom);
+
 }
