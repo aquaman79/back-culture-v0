@@ -11,11 +11,11 @@ public class PanierEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_utilisateur", nullable = false)
     private UtilisateurEntity utilisateur;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_film", nullable = false)
     private FilmEntity film;
 }
