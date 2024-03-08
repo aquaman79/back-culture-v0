@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TransactionBusiness {
     List<Transaction> createTransactions(Long idUtilisateur, List<Film> films);
+
+    List<Film> getTransactions(Long idUtilisateur);
 }

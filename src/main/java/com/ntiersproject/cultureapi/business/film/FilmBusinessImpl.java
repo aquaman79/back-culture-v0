@@ -1,12 +1,16 @@
 package com.ntiersproject.cultureapi.business.film;
 import com.ntiersproject.cultureapi.exception.FunctionalException;
+import com.ntiersproject.cultureapi.mapper.CommentaireMapper;
 import com.ntiersproject.cultureapi.mapper.FilmMapper;
 import com.ntiersproject.cultureapi.mapper.ImageFilmMapper;
 import com.ntiersproject.cultureapi.model.dto.Film;
 import com.ntiersproject.cultureapi.repository.mongodb.ImageFilmRepository;
 import com.ntiersproject.cultureapi.repository.mongodb.entity.ImageFilmEntity;
+import com.ntiersproject.cultureapi.repository.mysql.CommentaireRepository;
 import com.ntiersproject.cultureapi.repository.mysql.FilmRepository;
+import com.ntiersproject.cultureapi.repository.mysql.UtilisateurRepository;
 import com.ntiersproject.cultureapi.repository.mysql.entity.FilmEntity;
+import com.ntiersproject.cultureapi.repository.mysql.entity.UtilisateurEntity;
 import com.ntiersproject.cultureapi.utils.Constantes;
 import com.ntiersproject.cultureapi.utils.FormatDonneesUtils;
 import org.springframework.http.HttpStatus;
@@ -23,9 +27,15 @@ public class FilmBusinessImpl implements FilmBusiness {
 
     private ImageFilmRepository imageFilmRepository;
 
-    public FilmBusinessImpl(FilmRepository filmRepository, ImageFilmRepository imageFilmRepository) {
+    private CommentaireRepository commentaireRepository;
+
+    private UtilisateurRepository utilisateurRepository;
+
+    public FilmBusinessImpl(FilmRepository filmRepository, ImageFilmRepository imageFilmRepository, CommentaireRepository commentaireRepository, UtilisateurRepository utilisateurRepository) {
         this.filmRepository = filmRepository;
         this.imageFilmRepository = imageFilmRepository;
+        this.commentaireRepository = commentaireRepository;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     @Override
@@ -132,28 +142,22 @@ public class FilmBusinessImpl implements FilmBusiness {
     }
 
     @Override
-    public Film updateFilm(Long id, Film film) {
-        FilmEntity filmEntite = filmRepository.findById(id).orElseThrow(() -> new FunctionalException(HttpStatus.NOT_FOUND, Constantes.MESSAGE_FILM_NON_TROUVE));
-
+    public Film updateFilm(Long idUtilisateur, Film film) {
+        UtilisateurEntity utilisateurEntity = utilisateurRepository.findById(idUtilisateur).orElseThrow(() -> new FunctionalException(HttpStatus.NOT_FOUND, Constantes.MESSAGE_UTILISATEUR_NON_TROUVE));
+        FilmEntity filmEntite = filmRepository.findById(film.getId()).orElseThrow(() -> new FunctionalException(HttpStatus.NOT_FOUND, Constantes.MESSAGE_FILM_NON_TROUVE));
         if(film == null) {
             return FilmMapper.mapToDto(filmEntite); // aucune modif a faire
         }
 
-        if(film.getTitre() != null) {
-            FilmBusinessUtils.valideTitre(film.getTitre());
-            filmEntite.setTitre(film.getTitre());
-        }
+        commentaireRepository.deleteAll();
+        commentaireRepository.saveAll(CommentaireMapper.mapToEntities(film.getComments(), utilisateurEntity, filmEntite));
+        filmEntite = filmRepository.findById(film.getId()).get();
 
-        if(film.getDescription() != null) {
-            filmEntite.setDescription(film.getDescription());
-        }
+        ImageFilmEntity imageFilmEntite = imageFilmRepository.findByIdFilm(film.getId());
+        film.setImageBase64(ImageFilmMapper.mapToDto(imageFilmEntite));
+        FilmMapper.map(filmEntite, film);
 
-        if(film.getDuree() != null) {
-            filmEntite.setDuree(film.getDuree());
-        }
-
-        filmEntite = filmRepository.save(filmEntite);
-        return FilmMapper.mapToDto(filmEntite);
+        return FilmMapper.mapToDto(filmRepository.save(filmEntite));
     }
 
     private void verifieTitreExistePas(String titre) {

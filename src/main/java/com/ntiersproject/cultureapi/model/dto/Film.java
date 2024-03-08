@@ -23,5 +23,5 @@ public class Film {
 
     private String urlBandeAnnonce;
 
-    private List<Commentaire> commentaires;
+    private List<Commentaire> comments;
 }

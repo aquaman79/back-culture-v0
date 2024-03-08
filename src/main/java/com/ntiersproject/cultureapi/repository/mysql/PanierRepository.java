@@ -13,5 +13,6 @@ public interface PanierRepository extends JpaRepository<PanierEntity, Long> {
     List<PanierEntity> findAllByUtilisateur(UtilisateurEntity utilisateur);
 
     boolean existsByFilmAndUtilisateur(FilmEntity film, UtilisateurEntity utilisateur);
-    //PanierEntity findByFilmAndUtilisateur(FilmEntity film, UtilisateurEntity utilisateur);
+
+    void deletePanierEntityByFilmAndUtilisateur(FilmEntity film, UtilisateurEntity utilisateur);
 }

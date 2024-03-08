@@ -39,4 +39,13 @@ public class TransactionController {
         List<Transaction> transactions = transactionBusiness.createTransactions(idUtilisateur, films);
         return Response.status(201).entity(transactions).build();
     }
+
+    @GET
+    @Path("/{idUtilisateur}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTransactions(@PathParam("idUtilisateur") Long idUtilisateur) {
+        List<Film> films = transactionBusiness.getTransactions(idUtilisateur);
+        return Response.status(200).entity(films).build();
+    }
 }

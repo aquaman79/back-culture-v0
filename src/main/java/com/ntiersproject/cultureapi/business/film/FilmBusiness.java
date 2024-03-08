@@ -14,6 +14,6 @@ public interface FilmBusiness {
 
     Film getById(Long id);
 
-    Film updateFilm(Long id, Film film);
+    Film updateFilm(Long idUtilisateur, Film film);
 }
 

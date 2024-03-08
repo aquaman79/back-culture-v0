@@ -72,10 +72,10 @@ public class FilmController {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/{idUtilisateur}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateFilm(@PathParam("id") Long id, Film film) {
-        Film filmModifie = filmBusiness.updateFilm(id, film);
+    public Response updateFilm(@PathParam("idUtilisateur") Long idUtilisateur, Film film) {
+        Film filmModifie = filmBusiness.updateFilm(idUtilisateur, film);
         return Response.status(200).entity(filmModifie).build();
     }
 }

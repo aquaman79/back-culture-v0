@@ -1,8 +1,6 @@
 package com.ntiersproject.cultureapi.mapper;
 
-import com.ntiersproject.cultureapi.model.dto.Commentaire;
 import com.ntiersproject.cultureapi.model.dto.Film;
-import com.ntiersproject.cultureapi.repository.mysql.entity.CommentaireEntity;
 import com.ntiersproject.cultureapi.repository.mysql.entity.FilmEntity;
 
 import java.util.ArrayList;
@@ -22,19 +20,7 @@ public class FilmMapper {
         dto.setDuree(entite.getDuree());
         dto.setUrlBandeAnnonce(entite.getUrlBandeAnnonce());
 
-        if(entite.getCommentaires() !=null) {
-            List<Commentaire> commentaires = new ArrayList<>();
-            for(CommentaireEntity commentaireEntity: entite.getCommentaires()) {
-                Commentaire commentaire = new Commentaire();
-                commentaire.setId(commentaireEntity.getId());
-                commentaire.setAuteur(commentaireEntity.getUtilisateur().getPseudo());
-                commentaire.setContenu(commentaireEntity.getTexte());
-                commentaire.setDate(commentaireEntity.getDate());
-
-                commentaires.add(commentaire);
-            }
-            dto.setCommentaires(commentaires);
-        }
+        dto.setComments(CommentaireMapper.mapToDtos(entite.getCommentaires()));
 
         return dto;
     }
@@ -74,11 +60,5 @@ public class FilmMapper {
         cible.setDateSortie(source.getDateSortie());
         cible.setDuree(source.getDuree());
         cible.setUrlBandeAnnonce(source.getUrlBandeAnnonce());
-
-        if(source.getCommentaires() == null) {
-            cible.setCommentaires(null);
-        } else {
-            List<CommentaireEntity> commentaireEntities = new ArrayList<>();
-        }
     }
 }
